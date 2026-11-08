@@ -1,69 +1,144 @@
-import Image from "next/image";
+
+"use client";
+
+import { useState } from "react";
+import CourseCard from "../components/CourseCard";
+import courses from "../data/courses";
 
 export default function Home() {
+  const [selectedCategory, setSelectedCategory] = useState("All Courses");
+  const [searchTerm, setSearchTerm] = useState("");
+
+  // Course categories
+  const categories = [
+    "All Courses",
+    "Web Development",
+    "Programming",
+    "Design",
+    "Data Science",
+    "Cybersecurity",
+  ];
+
+  // Filter courses by category and search
+  const filteredCourses = courses.filter((course) => {
+    const matchesCategory =
+      selectedCategory === "All Courses" ||
+      course.category === selectedCategory;
+
+    const matchesSearch =
+      course.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      course.instructor.toLowerCase().includes(searchTerm.toLowerCase());
+
+    return matchesCategory && matchesSearch;
+  });
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
+    <main className="min-h-screen bg-gray-100">
+
+      {/* Header */}
+      <header className="bg-blue-900 text-white p-6">
+        <h1 className="text-3xl font-bold">
+          LearnHub Academy
+        </h1>
+
+        <p className="text-blue-200">
+          Your journey to learning starts here.
+        </p>
+      </header>
+
+      {/* Hero Section */}
+      <section className="text-center py-12 px-6">
+        <h2 className="text-4xl font-bold text-gray-900 mb-4">
+          Explore Our Courses
+        </h2>
+
+        <p className="text-lg text-gray-600">
+          Discover new skills and advance your knowledge.
+        </p>
+      </section>
+
+      {/* Category Filter Buttons */}
+      <section className="max-w-7xl mx-auto px-6 mb-8">
+        <div className="flex flex-wrap justify-center gap-3">
+          {categories.map((category) => (
+            <button
+              key={category}
+              onClick={() => setSelectedCategory(category)}
+              className={`px-5 py-2 rounded-lg font-medium transition cursor-pointer ${
+                selectedCategory === category
+                  ? "bg-blue-900 text-white"
+                  : "bg-white text-blue-900 border border-blue-900 hover:bg-blue-100"
+              }`}
+            >
+              {category}
+            </button>
+          ))}
+        </div>
+      </section>
+
+      {/* Course Search Box */}
+      <section className="max-w-3xl mx-auto px-6 mb-8">
+        <input
+          type="text"
+          placeholder="Search courses by title or instructor..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="w-full p-4 rounded-lg border border-gray-300 bg-white text-gray-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.js
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+      </section>
+
+            
+{/* Course Counter and Clear Filters Button */}
+<div className="max-w-7xl mx-auto px-6 mb-6 flex flex-wrap justify-between items-center gap-4">
+  <p className="text-gray-700 text-lg font-medium">
+    Showing {filteredCourses.length} of {courses.length} courses
+  </p>
+
+  <button
+    onClick={() => {
+      setSelectedCategory("All Courses");
+      setSearchTerm("");
+    }}
+    className="bg-blue-900 text-white px-5 py-2 rounded-lg font-medium hover:bg-blue-800 transition cursor-pointer"
+  >
+    Clear Filters
+  </button>
+</div>
+
+
+      {/* Course Grid and No Courses Found Message */}
+      <section className="max-w-7xl mx-auto px-6 pb-12">
+        {filteredCourses.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredCourses.map((course) => (
+              <CourseCard
+                key={course.id}
+                course={course}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="bg-white rounded-xl shadow-md p-12 text-center">
+            <div className="text-5xl mb-4">🔍</div>
+
+            <h2 className="text-2xl font-bold text-gray-900 mb-3">
+              No courses found
+            </h2>
+
+            <p className="text-gray-600">
+              Try searching for a different course or selecting another category.
+            </p>
+          </div>
+        )}
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-blue-900 text-white text-center p-6">
+        <p>
+          © 2026 LearnHub Academy. All rights reserved.
+        </p>
+      </footer>
+
+    </main>
   );
 }

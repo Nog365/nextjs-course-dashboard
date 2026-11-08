@@ -46,16 +46,23 @@ export default function Home() {
         </p>
       </header>
 
-      {/* Hero Section */}
-      <section className="text-center py-12 px-6">
-        <h2 className="text-4xl font-bold text-gray-900 mb-4">
-          Explore Our Courses
-        </h2>
+            
+{/* Hero Section */}
+<section className="text-center py-12 px-6">
+  <h2 className="text-4xl font-bold text-gray-900 mb-4">
+    Welcome to LearnHub Academy!
+  </h2>
 
-        <p className="text-lg text-gray-600">
-          Discover new skills and advance your knowledge.
-        </p>
-      </section>
+  <p className="text-lg text-gray-600 mb-4">
+    Explore our courses, discover new skills, and take the
+    next step in your learning journey.
+  </p>
+
+  <p className="text-blue-900 font-semibold text-xl">
+    Explore Our Courses
+  </p>
+</section>
+
 
       {/* Category Filter Buttons */}
       <section className="max-w-7xl mx-auto px-6 mb-8">
